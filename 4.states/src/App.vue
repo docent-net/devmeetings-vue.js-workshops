@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <product-list :products="products"></product-list>
+      <product-list :products="sharedState.products"></product-list>
       <!-- With @ we can listen to onAddProduct event and assign handleAddProduct-->
       <add-product @onAddProduct="handleAddProduct"></add-product>
   </div>
@@ -10,6 +10,7 @@
 
 import ProductList from '../src/components/ProductList'
 import AddProduct from '../src/components/AddProduct'
+import store from '../store';
 
 export default {
     name: 'app',
@@ -17,14 +18,17 @@ export default {
         ProductList,
         AddProduct
     },
+    created() {
+        store.fetchProducts();
+    },
     data() {
         return {
-            products: []
+            sharedState: store.state
         }
     },
     methods: {
         handleAddProduct(product) {
-            this.products.push(product);
+            store.addProduct(product);
         }
     }
 }
