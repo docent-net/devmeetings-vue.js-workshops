@@ -10,7 +10,6 @@
 
 import ProductList from '../src/components/ProductList'
 import AddProduct from '../src/components/AddProduct'
-import store from '../store';
 
 export default {
     name: 'app',
@@ -19,16 +18,28 @@ export default {
         AddProduct
     },
     created() {
-        store.fetchProducts();
+        // store.fetchProducts();
     },
-    data() {
-        return {
-            sharedState: store.state
+    //5/ Instead of data, we're using 'computed' to get products from injected $store
+    computed: {
+        products() {
+            return this.$store.state.products;
         }
     },
+    // data() {
+    //     return {
+    //         sharedState: store.state
+    //     }
+    // },
+    // methods: {
+    //     handleAddProduct(product) {
+    //         store.addProduct(product);
+    //     }
+    // }
+    //5/ methods will now use dispatch function with name of action and payload
     methods: {
         handleAddProduct(product) {
-            store.addProduct(product);
+            this.$store.dispatch('addProduct', product);
         }
     }
 }
